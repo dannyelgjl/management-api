@@ -126,6 +126,12 @@ A documentação Swagger ficará disponível em:
 http://localhost:3000/api/docs
 ```
 
+O contrato OpenAPI em JSON ficará disponível em:
+
+```text
+http://localhost:3000/api/docs-json
+```
+
 ## Scripts
 
 - `npm run start:dev`: inicia a API em modo desenvolvimento.
@@ -143,6 +149,12 @@ O `docker-compose.yml` cria dois bancos: `management_api` e `management_api_test
 ## Deploy free com Render + Neon
 
 Este projeto já inclui um `render.yaml` para facilitar o deploy da API no Render usando um banco PostgreSQL externo no Neon.
+
+Neste deploy:
+
+- Neon hospeda o banco PostgreSQL gerenciado.
+- Render hospeda a API NestJS pública.
+- A variável `DATABASE_URL` conecta a API do Render ao banco do Neon.
 
 ### 1. Criar banco no Neon
 
@@ -192,11 +204,18 @@ Swagger público:
 /api/docs
 ```
 
+OpenAPI JSON público:
+
+```text
+/api/docs-json
+```
+
 Depois do deploy, a API pública fica em:
 
 ```text
 https://management-api-y4gi.onrender.com/api
 https://management-api-y4gi.onrender.com/api/docs
+https://management-api-y4gi.onrender.com/api/docs-json
 ```
 
 ### 4. Popular dados de demonstração
@@ -354,6 +373,14 @@ Testes unitários:
 
 ```bash
 npm test
+```
+
+Os testes unitários cobrem controllers, services, validações, paginação, envelope de resposta, filtro global de erro, bootstrap da aplicação, módulo principal e integração com o `PrismaService`.
+
+Para gerar relatório de cobertura:
+
+```bash
+npm test -- --coverage
 ```
 
 Testes de integração HTTP com PostgreSQL:
