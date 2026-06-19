@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 
+import { AppController } from './app.controller';
 import { PrismaModule } from './prisma/prisma.module';
 import { TasksModule } from './tasks/tasks.module';
 import { TeamsModule } from './teams/teams.module';
@@ -12,5 +13,6 @@ import { TeamsModule } from './teams/teams.module';
     TeamsModule,
     TasksModule,
   ],
+  controllers: [AppController],
 })
 export class AppModule {}

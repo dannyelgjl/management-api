@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: management-api
+    runtime: node
+    plan: free
+    buildCommand: npm ci && npm run db:generate && npm run build
+    startCommand: npm run deploy:start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: 24.17.0
+      - key: DATABASE_URL
+        sync: false

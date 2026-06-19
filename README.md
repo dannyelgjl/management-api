@@ -125,6 +125,7 @@ http://localhost:3000/api
 - `npm run start:dev`: inicia a API em modo desenvolvimento.
 - `npm run build`: compila o projeto.
 - `npm run start:prod`: executa o build.
+- `npm run deploy:start`: aplica migrations pendentes e inicia o build compilado.
 - `npm run db:migrate`: aplica migrations em desenvolvimento.
 - `npm run db:deploy`: aplica migrations em ambiente não interativo.
 - `npm run seed`: recria dados iniciais.
@@ -132,6 +133,71 @@ http://localhost:3000/api
 - `npm run test:e2e`: aplica migrations no banco de teste e roda testes de integração HTTP.
 
 O `docker-compose.yml` cria dois bancos: `management_api` e `management_api_test`.
+
+## Deploy free com Render + Neon
+
+Este projeto já inclui um `render.yaml` para facilitar o deploy da API no Render usando um banco PostgreSQL externo no Neon.
+
+### 1. Criar banco no Neon
+
+1. Crie uma conta em https://neon.tech.
+2. Crie um projeto PostgreSQL free.
+3. Copie a connection string direta do banco.
+4. Use essa connection string como `DATABASE_URL` no Render.
+
+Para Prisma, prefira a connection string direta do Postgres. Se o painel mostrar uma opção pooled e outra direct, use a direct para este desafio.
+
+### 2. Publicar o repositório no GitHub
+
+O Render faz deploy a partir de um repositório Git. Depois de subir este projeto para o GitHub, conecte o repositório no Render.
+
+### 3. Criar Web Service no Render
+
+No Render:
+
+1. Clique em `New`.
+2. Escolha `Blueprint` se quiser usar o `render.yaml`; ou `Web Service` para configurar manualmente.
+3. Conecte o repositório.
+4. Configure a variável de ambiente:
+
+```env
+DATABASE_URL=postgresql://...
+```
+
+Com o `render.yaml`, os comandos ficam:
+
+```bash
+npm ci && npm run db:generate && npm run build
+```
+
+```bash
+npm run deploy:start
+```
+
+Healthcheck:
+
+```text
+/api/health
+```
+
+### 4. Popular dados de demonstração
+
+O seed não roda automaticamente no start do deploy porque ele recria os dados. Depois do primeiro deploy, rode uma vez:
+
+```bash
+npm run seed
+```
+
+Se o plano free do Render não liberar shell/one-off job, rode o seed localmente apontando para o banco do Neon:
+
+```bash
+DATABASE_URL="postgresql://..." npm run seed
+```
+
+### Observações do plano free
+
+- Render free pode dormir depois de alguns minutos sem tráfego; a primeira chamada depois disso pode demorar.
+- Neon free é suficiente para avaliação e protótipo, mas não deve ser tratado como ambiente de produção crítico.
 
 ## Endpoints REST
 
