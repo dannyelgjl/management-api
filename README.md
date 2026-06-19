@@ -120,6 +120,12 @@ A API ficará disponível em:
 http://localhost:3000/api
 ```
 
+A documentação Swagger ficará disponível em:
+
+```text
+http://localhost:3000/api/docs
+```
+
 ## Scripts
 
 - `npm run start:dev`: inicia a API em modo desenvolvimento.
@@ -178,6 +184,19 @@ Healthcheck:
 
 ```text
 /api/health
+```
+
+Swagger público:
+
+```text
+/api/docs
+```
+
+Depois do deploy, a API pública fica em:
+
+```text
+https://management-api-y4gi.onrender.com/api
+https://management-api-y4gi.onrender.com/api/docs
 ```
 
 ### 4. Popular dados de demonstração
